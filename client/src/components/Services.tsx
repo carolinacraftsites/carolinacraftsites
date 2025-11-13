@@ -11,7 +11,7 @@ export function Services() {
     {
       icon: Palette,
       title: "Design & Build",
-      description: "Our team creates a custom website tailored to your trade. Professional design that showcases your services and builds trust."
+      description: "Our team creates a custom website tailored to your business. Professional design that showcases your services and builds trust."
     },
     {
       icon: Rocket,

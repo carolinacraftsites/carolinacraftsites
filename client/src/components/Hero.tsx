@@ -21,10 +21,10 @@ export function Hero() {
       <div className="relative container mx-auto px-4 md:px-8 py-24 md:py-32 lg:py-40">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            Professional Websites for Tradespeople
+            Professional Websites for Your Business
           </h1>
           <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl">
-            Get your business online in days, not weeks. Custom websites built specifically for plumbers, electricians, contractors, and craftspeople who want to grow their business.
+            Get your business online in days, not weeks. Custom websites built for small businesses and professionals who want to grow their online presence.
           </p>
           <div className="flex flex-wrap gap-4">
             <Button

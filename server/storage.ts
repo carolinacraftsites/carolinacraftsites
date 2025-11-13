@@ -10,7 +10,7 @@ import {
   newsletterSubscriptions,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -56,7 +56,7 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(contactInquiries)
-      .orderBy(contactInquiries.createdAt);
+      .orderBy(desc(contactInquiries.createdAt));
   }
 
   async createNewsletterSubscription(
@@ -73,7 +73,7 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(newsletterSubscriptions)
-      .orderBy(newsletterSubscriptions.createdAt);
+      .orderBy(desc(newsletterSubscriptions.createdAt));
   }
 
   async getNewsletterSubscriptionByEmail(email: string): Promise<NewsletterSubscription | undefined> {

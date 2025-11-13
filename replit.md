@@ -1,7 +1,7 @@
 # Carolina Craft Sites - Marketing Website
 
 ## Overview
-A professional marketing website for Carolina Craft Sites, a service business that provides custom websites for tradespeople (plumbers, electricians, contractors, etc.). The site features a modern design with full functionality for collecting customer leads through contact forms and newsletter subscriptions.
+A professional marketing website for Carolina Craft Sites, a service business that provides custom websites for small businesses and professionals. The site features a modern design with full functionality for collecting customer leads through contact forms and newsletter subscriptions.
 
 ## Current State
 The application is **production-ready** with the following features fully implemented:
@@ -41,7 +41,6 @@ The application is **production-ready** with the following features fully implem
 ### contact_inquiries
 - id (varchar, primary key)
 - name (text)
-- business_type (text)
 - phone (text)
 - email (text)
 - message (text)
@@ -56,7 +55,7 @@ The application is **production-ready** with the following features fully implem
 
 ### POST /api/contact
 Submit a contact inquiry
-- **Request**: `{ name, businessType, phone, email, message }`
+- **Request**: `{ name, phone, email, message }`
 - **Response**: `{ success: boolean, message: string }`
 
 ### POST /api/newsletter
@@ -74,8 +73,7 @@ Get all newsletter subscriptions (sorted by date)
 ## Features
 
 ### Contact Form
-- Full validation with required fields
-- Business type dropdown (Plumbing, Electrical, HVAC, Carpentry, Roofing, Landscaping, Painting, Other)
+- Full validation with required fields (name, phone, email, message)
 - Loading states during submission
 - Success/error toast notifications
 - Form clears on successful submission
@@ -90,7 +88,8 @@ Get all newsletter subscriptions (sorted by date)
 - All data persists to PostgreSQL database
 
 ### Portfolio Section
-- 6 example website mockups for different trades
+- 6 example website mockups for different business types
+- Generic categories (Service Business, Professional Services, Creative Business, etc.)
 - Hover effects on portfolio cards
 - Responsive grid layout
 
@@ -108,6 +107,10 @@ Get all newsletter subscriptions (sorted by date)
 - Accessible color contrast in both light and dark modes
 
 ## Recent Changes (Nov 13, 2024)
+- Made website more generic and industry-agnostic per user request
+- Removed industry dropdown from contact form
+- Updated all trade-specific language to be more generic
+- Removed business_type field from database schema
 - Removed testimonials section per user request
 - Added PostgreSQL database for persistent storage
 - Replaced in-memory storage with DatabaseStorage
@@ -129,7 +132,9 @@ npm run db:push --force # Force push schema changes
 ```
 
 ## User Preferences
-- Removed testimonials section (user preference)
+- Generic website copy suitable for any business type (not trade-specific)
+- No industry dropdown in contact form - keep it simple
+- Removed testimonials section
 - Clean, professional design focused on lead generation
 - Straightforward navigation without unnecessary sections
 

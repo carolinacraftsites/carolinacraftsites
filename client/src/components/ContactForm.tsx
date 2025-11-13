@@ -4,13 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Mail, Phone, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
@@ -20,7 +13,6 @@ export function ContactForm() {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
-    businessType: "",
     phone: "",
     email: "",
     message: ""
@@ -37,7 +29,6 @@ export function ContactForm() {
       });
       setFormData({
         name: "",
-        businessType: "",
         phone: "",
         email: "",
         message: ""
@@ -74,41 +65,16 @@ export function ContactForm() {
             <Card>
               <CardContent className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Your Name *</Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        required
-                        disabled={contactMutation.isPending}
-                        data-testid="input-name"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="businessType">Business Type *</Label>
-                      <Select
-                        value={formData.businessType}
-                        onValueChange={(value) => setFormData({ ...formData, businessType: value })}
-                        required
-                        disabled={contactMutation.isPending}
-                      >
-                        <SelectTrigger id="businessType" data-testid="select-business-type">
-                          <SelectValue placeholder="Select your trade" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="plumbing">Plumbing</SelectItem>
-                          <SelectItem value="electrical">Electrical</SelectItem>
-                          <SelectItem value="hvac">HVAC</SelectItem>
-                          <SelectItem value="carpentry">Carpentry</SelectItem>
-                          <SelectItem value="roofing">Roofing</SelectItem>
-                          <SelectItem value="landscaping">Landscaping</SelectItem>
-                          <SelectItem value="painting">Painting</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Your Name *</Label>
+                    <Input
+                      id="name"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      required
+                      disabled={contactMutation.isPending}
+                      data-testid="input-name"
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -139,12 +105,12 @@ export function ContactForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message">Tell us about your business</Label>
+                    <Label htmlFor="message">Tell us about your project</Label>
                     <Textarea
                       id="message"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="What services do you offer? What are your goals for your website?"
+                      placeholder="What are you looking for? What are your goals for your website?"
                       rows={5}
                       disabled={contactMutation.isPending}
                       data-testid="input-message"
@@ -201,7 +167,7 @@ export function ContactForm() {
               <CardContent className="p-6">
                 <h3 className="font-semibold mb-2">Why Choose Us?</h3>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>✓ 10+ years serving tradespeople</li>
+                  <li>✓ 10+ years of experience</li>
                   <li>✓ Over 500 websites delivered</li>
                   <li>✓ Average 7-day turnaround</li>
                   <li>✓ 100% satisfaction guarantee</li>

@@ -11,38 +11,38 @@ export function Portfolio() {
   const portfolioItems = [
     {
       image: plumberImg,
-      category: "Plumbing",
-      title: "24/7 Emergency Plumbing Services",
+      category: "Service Business",
+      title: "Emergency Service Provider",
       description: "Modern website with online booking and service area map"
     },
     {
       image: electricianImg,
-      category: "Electrical",
-      title: "Licensed Electrical Contractor",
-      description: "Professional site highlighting certifications and safety"
+      category: "Professional Services",
+      title: "Licensed Contractor",
+      description: "Professional site highlighting certifications and expertise"
     },
     {
       image: carpenterImg,
-      category: "Carpentry",
-      title: "Custom Woodworking & Remodeling",
+      category: "Creative Business",
+      title: "Custom Design & Remodeling",
       description: "Portfolio-focused design showcasing craftsmanship"
     },
     {
       image: hvacImg,
-      category: "HVAC",
-      title: "Heating & Cooling Experts",
+      category: "Service Business",
+      title: "Technical Service Experts",
       description: "Service-focused site with seasonal promotions"
     },
     {
       image: landscapingImg,
-      category: "Landscaping",
-      title: "Premium Landscape Design",
+      category: "Design Services",
+      title: "Premium Design & Installation",
       description: "Visual gallery with before/after transformations"
     },
     {
       image: roofingImg,
-      category: "Roofing",
-      title: "Residential & Commercial Roofing",
+      category: "Commercial Services",
+      title: "Residential & Commercial Solutions",
       description: "Trust-building site with warranty information"
     }
   ];
@@ -52,10 +52,10 @@ export function Portfolio() {
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-semibold mb-4">
-            Websites Built for Trades
+            Our Recent Work
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            See how we help tradespeople like you establish a professional online presence
+            See how we help businesses establish a professional online presence
           </p>
         </div>
 

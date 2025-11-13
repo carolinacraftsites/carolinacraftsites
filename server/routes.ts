@@ -14,7 +14,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log("New contact inquiry received:", {
         name: inquiry.name,
-        businessType: inquiry.businessType,
         email: inquiry.email,
         phone: inquiry.phone,
       });
@@ -50,7 +49,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json({
         success: true,
-        message: "Successfully subscribed! You'll receive marketing tips for tradespeople.",
+        message: "Successfully subscribed! You'll receive our latest updates and tips.",
       });
     } catch (error) {
       console.error("Error creating newsletter subscription:", error);
