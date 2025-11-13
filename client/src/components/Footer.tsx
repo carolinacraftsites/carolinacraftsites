@@ -2,19 +2,36 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 export function Footer() {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
 
+  const newsletterMutation = useMutation({
+    mutationFn: async (email: string) => {
+      return await apiRequest<{ success: boolean; message: string }>("/api/newsletter", "POST", { email });
+    },
+    onSuccess: (response) => {
+      toast({
+        title: "Subscribed!",
+        description: response.message || "You'll receive marketing tips for tradespeople.",
+      });
+      setEmail("");
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to subscribe. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleNewsletterSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Newsletter signup:", email);
-    toast({
-      title: "Subscribed!",
-      description: "You'll receive marketing tips for tradespeople.",
-    });
-    setEmail("");
+    newsletterMutation.mutate(email);
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -126,10 +143,16 @@ export function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={newsletterMutation.isPending}
                 data-testid="input-newsletter"
               />
-              <Button type="submit" size="sm" data-testid="button-subscribe">
-                Subscribe
+              <Button
+                type="submit"
+                size="sm"
+                disabled={newsletterMutation.isPending}
+                data-testid="button-subscribe"
+              >
+                {newsletterMutation.isPending ? "Subscribing..." : "Subscribe"}
               </Button>
             </form>
           </div>

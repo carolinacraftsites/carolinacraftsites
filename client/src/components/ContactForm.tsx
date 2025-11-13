@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/select";
 import { Mail, Phone, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 export function ContactForm() {
   const { toast } = useToast();
@@ -24,20 +26,35 @@ export function ContactForm() {
     message: ""
   });
 
+  const contactMutation = useMutation({
+    mutationFn: async (data: typeof formData) => {
+      return await apiRequest<{ success: boolean; message: string }>("/api/contact", "POST", data);
+    },
+    onSuccess: (response) => {
+      toast({
+        title: "Message Sent!",
+        description: response.message || "We'll get back to you within 24 hours.",
+      });
+      setFormData({
+        name: "",
+        businessType: "",
+        phone: "",
+        email: "",
+        message: ""
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
-    setFormData({
-      name: "",
-      businessType: "",
-      phone: "",
-      email: "",
-      message: ""
-    });
+    contactMutation.mutate(formData);
   };
 
   return (
@@ -65,6 +82,7 @@ export function ContactForm() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
+                        disabled={contactMutation.isPending}
                         data-testid="input-name"
                       />
                     </div>
@@ -74,6 +92,7 @@ export function ContactForm() {
                         value={formData.businessType}
                         onValueChange={(value) => setFormData({ ...formData, businessType: value })}
                         required
+                        disabled={contactMutation.isPending}
                       >
                         <SelectTrigger id="businessType" data-testid="select-business-type">
                           <SelectValue placeholder="Select your trade" />
@@ -101,6 +120,7 @@ export function ContactForm() {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         required
+                        disabled={contactMutation.isPending}
                         data-testid="input-phone"
                       />
                     </div>
@@ -112,6 +132,7 @@ export function ContactForm() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
+                        disabled={contactMutation.isPending}
                         data-testid="input-email"
                       />
                     </div>
@@ -125,12 +146,18 @@ export function ContactForm() {
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="What services do you offer? What are your goals for your website?"
                       rows={5}
-                      data-testid="textarea-message"
+                      disabled={contactMutation.isPending}
+                      data-testid="input-message"
                     />
                   </div>
 
-                  <Button type="submit" className="w-full" data-testid="button-submit">
-                    Send Message
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={contactMutation.isPending}
+                    data-testid="button-submit"
+                  >
+                    {contactMutation.isPending ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </CardContent>
