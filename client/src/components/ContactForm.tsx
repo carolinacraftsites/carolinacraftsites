@@ -6,8 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 
 export function ContactForm() {
   const { toast } = useToast();
@@ -17,15 +15,27 @@ export function ContactForm() {
     email: "",
     message: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const contactMutation = useMutation({
-    mutationFn: async (data: typeof formData) => {
-      return await apiRequest<{ success: boolean; message: string }>("/api/contact", "POST", data);
-    },
-    onSuccess: (response) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Website Inquiry from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    );
+    const mailtoLink = `mailto:hello@carolinacraftsites.com?subject=${subject}&body=${body}`;
+
+    // Open default email client
+    window.location.href = mailtoLink;
+
+    // Show success message
+    setTimeout(() => {
       toast({
-        title: "Message Sent!",
-        description: response.message || "We'll get back to you within 24 hours.",
+        title: "Opening Email Client",
+        description: "Your default email application will open with the message.",
       });
       setFormData({
         name: "",
@@ -33,19 +43,8 @@ export function ContactForm() {
         email: "",
         message: ""
       });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    contactMutation.mutate(formData);
+      setIsSubmitting(false);
+    }, 500);
   };
 
   return (
@@ -72,7 +71,7 @@ export function ContactForm() {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
-                      disabled={contactMutation.isPending}
+                      disabled={isSubmitting}
                       data-testid="input-name"
                     />
                   </div>
@@ -86,7 +85,7 @@ export function ContactForm() {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         required
-                        disabled={contactMutation.isPending}
+                        disabled={isSubmitting}
                         data-testid="input-phone"
                       />
                     </div>
@@ -98,7 +97,7 @@ export function ContactForm() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
-                        disabled={contactMutation.isPending}
+                        disabled={isSubmitting}
                         data-testid="input-email"
                       />
                     </div>
@@ -112,7 +111,7 @@ export function ContactForm() {
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="What are you looking for? What are your goals for your website?"
                       rows={5}
-                      disabled={contactMutation.isPending}
+                      disabled={isSubmitting}
                       data-testid="input-message"
                     />
                   </div>
@@ -120,10 +119,10 @@ export function ContactForm() {
                   <Button
                     type="submit"
                     className="w-full"
-                    disabled={contactMutation.isPending}
+                    disabled={isSubmitting}
                     data-testid="button-submit"
                   >
-                    {contactMutation.isPending ? "Sending..." : "Send Message"}
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </CardContent>

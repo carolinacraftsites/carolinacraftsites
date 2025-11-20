@@ -2,39 +2,38 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 
 export function Footer() {
   const { toast } = useToast();
   const [email, setEmail] = useState("");
 
-  const newsletterMutation = useMutation({
-    mutationFn: async (email: string) => {
-      return await apiRequest<{ success: boolean; message: string }>("/api/newsletter", "POST", { email });
-    },
-    onSuccess: (response) => {
-      toast({
-        title: "Subscribed!",
-        description: response.message || "You'll receive marketing tips for tradespeople.",
-      });
-      setEmail("");
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to subscribe. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
   const handleNewsletterSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    newsletterMutation.mutate(email);
+
+    // Create mailto link for newsletter subscription
+    const subject = encodeURIComponent('Newsletter Subscription');
+    const body = encodeURIComponent(`Please add ${email} to the newsletter mailing list.`);
+    const mailtoLink = `mailto:hello@carolinacraftsites.com?subject=${subject}&body=${body}`;
+
+    // Open default email client
+    window.location.href = mailtoLink;
+
+    toast({
+      title: "Opening Email Client",
+      description: "Your default email application will open to complete the subscription.",
+    });
+
+    setEmail("");
   };
 
-  const scrollToSection = (sectionId: string) => {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    // Allow default behavior for Cmd+Click (Mac) or Ctrl+Click (Windows) to open in new tab
+    if (e.metaKey || e.ctrlKey) {
+      return;
+    }
+
+    // Otherwise, smooth scroll to section
+    e.preventDefault();
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -60,40 +59,44 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Services</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <button
-                  onClick={() => scrollToSection("services")}
+                <a
+                  href="#services"
+                  onClick={(e) => handleLinkClick(e, "services")}
                   className="text-muted-foreground hover:text-foreground transition-colors"
                   data-testid="footer-link-website-design"
                 >
                   Website Design
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection("services")}
+                <a
+                  href="#services"
+                  onClick={(e) => handleLinkClick(e, "services")}
                   className="text-muted-foreground hover:text-foreground transition-colors"
                   data-testid="footer-link-seo"
                 >
                   SEO Optimization
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection("services")}
+                <a
+                  href="#services"
+                  onClick={(e) => handleLinkClick(e, "services")}
                   className="text-muted-foreground hover:text-foreground transition-colors"
                   data-testid="footer-link-hosting"
                 >
                   Hosting Setup
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection("services")}
+                <a
+                  href="#services"
+                  onClick={(e) => handleLinkClick(e, "services")}
                   className="text-muted-foreground hover:text-foreground transition-colors"
                   data-testid="footer-link-support"
                 >
                   Ongoing Support
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -102,31 +105,34 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Company</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <button
-                  onClick={() => scrollToSection("portfolio")}
+                <a
+                  href="#portfolio"
+                  onClick={(e) => handleLinkClick(e, "portfolio")}
                   className="text-muted-foreground hover:text-foreground transition-colors"
                   data-testid="footer-link-portfolio"
                 >
                   Portfolio
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection("pricing")}
+                <a
+                  href="#pricing"
+                  onClick={(e) => handleLinkClick(e, "pricing")}
                   className="text-muted-foreground hover:text-foreground transition-colors"
                   data-testid="footer-link-pricing"
                 >
                   Pricing
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection("contact")}
+                <a
+                  href="#contact"
+                  onClick={(e) => handleLinkClick(e, "contact")}
                   className="text-muted-foreground hover:text-foreground transition-colors"
                   data-testid="footer-link-contact"
                 >
                   Contact
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -143,16 +149,14 @@ export function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                disabled={newsletterMutation.isPending}
                 data-testid="input-newsletter"
               />
               <Button
                 type="submit"
                 size="sm"
-                disabled={newsletterMutation.isPending}
                 data-testid="button-subscribe"
               >
-                {newsletterMutation.isPending ? "Subscribing..." : "Subscribe"}
+                Subscribe
               </Button>
             </form>
           </div>

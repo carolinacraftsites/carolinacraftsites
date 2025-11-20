@@ -3,7 +3,14 @@ import { ThemeToggle } from "./ThemeToggle";
 import { Menu } from "lucide-react";
 
 export function Header() {
-  const scrollToSection = (sectionId: string) => {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    // Allow default behavior for Cmd+Click (Mac) or Ctrl+Click (Windows) to open in new tab
+    if (e.metaKey || e.ctrlKey) {
+      return;
+    }
+
+    // Otherwise, smooth scroll to section
+    e.preventDefault();
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -18,44 +25,50 @@ export function Header() {
         </div>
 
         <nav className="hidden md:flex items-center gap-6">
-          <button
-            onClick={() => scrollToSection("services")}
+          <a
+            href="#services"
+            onClick={(e) => handleLinkClick(e, "services")}
             className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
             data-testid="link-services"
           >
             Services
-          </button>
-          <button
-            onClick={() => scrollToSection("portfolio")}
+          </a>
+          <a
+            href="#portfolio"
+            onClick={(e) => handleLinkClick(e, "portfolio")}
             className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
             data-testid="link-portfolio"
           >
             Portfolio
-          </button>
-          <button
-            onClick={() => scrollToSection("pricing")}
+          </a>
+          <a
+            href="#pricing"
+            onClick={(e) => handleLinkClick(e, "pricing")}
             className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
             data-testid="link-pricing"
           >
             Pricing
-          </button>
-          <button
-            onClick={() => scrollToSection("contact")}
+          </a>
+          <a
+            href="#contact"
+            onClick={(e) => handleLinkClick(e, "contact")}
             className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
             data-testid="link-contact"
           >
             Contact
-          </button>
+          </a>
         </nav>
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <Button
             className="hidden md:flex"
-            onClick={() => scrollToSection("contact")}
+            asChild
             data-testid="button-get-started"
           >
-            Get Started
+            <a href="#contact" onClick={(e) => handleLinkClick(e, "contact")}>
+              Get Started
+            </a>
           </Button>
           <Button
             variant="ghost"
