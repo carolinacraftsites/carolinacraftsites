@@ -15,7 +15,7 @@ export default function Home() {
         <Services />
         <Portfolio />
         <Pricing />
-        <ContactForm />
+        {/* <ContactForm /> */}
       </main>
       <Footer />
     </div>
