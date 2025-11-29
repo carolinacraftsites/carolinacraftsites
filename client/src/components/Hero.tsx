@@ -1,13 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
 import heroImage from "@assets/generated_images/Hero_devices_showcase_background_559f321a.png";
 
 export function Hero() {
-  const scrollToContact = () => {
-    const element = document.getElementById("contact");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   return (
     <section className="relative w-full overflow-hidden">
@@ -27,14 +22,15 @@ export function Hero() {
             Get your business online in days, not weeks. Custom websites built for small businesses and professionals who want to grow their online presence.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Button
-              size="lg"
-              variant="default"
-              onClick={scrollToContact}
-              data-testid="button-hero-cta"
-            >
-              Get Your Website Today
-            </Button>
+            <Link href="/contact">
+              <Button
+                size="lg"
+                variant="default"
+                data-testid="button-hero-cta"
+              >
+                Get Your Website Today
+              </Button>
+            </Link>
             <Button
               size="lg"
               variant="outline"
