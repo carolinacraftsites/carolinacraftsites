@@ -66,7 +66,6 @@ export default function Contact() {
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li>✓ 10+ years of experience</li>
                     <li>✓ Average 3-day turnaround</li>
-                    <li>✓ You don't pay until you approve the site</li>
                   </ul>
                 </CardContent>
               </Card>
